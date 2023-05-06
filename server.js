@@ -1,7 +1,11 @@
-const PORT = 8080;
+const PORT = 3000;
 const app = require('express')();
 const mongoClient = require('mongodb').MongoClient;
 let db;
+
+app.get('/', (req,res, next) => {
+    res.redirect('/home');
+})
 
 
 
