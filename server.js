@@ -1,6 +1,8 @@
 const PORT = 3000;
-const app = require('express')();
-const mongoClient = require('mongodb').MongoClient;
+const express = require('express');
+const app = express();
+const mongo = require('mongodb');
+const mongoClient = mongo.MongoClient;
 let db;
 
 app.get('/', (req,res, next) => {
