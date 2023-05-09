@@ -9,7 +9,7 @@ client.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true}, async (err
 
     await db.collection('accounts').deleteMany({});
     //admin user
-    await db.collection('accounts').insertOne({username: 'admin', password: 'admin'}, (err, result) => {
+    await db.collection('accounts').insertOne({username: 'admin', password: 'admin', courses: []}, (err, result) => {
         if (err) throw err;
     });
     fs.readFile('mock-users.json', async (err, data) => {

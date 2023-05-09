@@ -7,7 +7,11 @@ let db;
 
 app.get('/', (req,res, next) => {
     res.redirect('/home');
-})
+});
+
+app.get('/reg', (req, res, next) => {
+    
+});
 
 
 
