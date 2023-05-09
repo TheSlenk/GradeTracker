@@ -1,4 +1,26 @@
-const app = require('Express')()
+const PORT = 3000;
+const express = require('express');
+const app = express();
+const mongo = require('mongodb');
+const mongoClient = mongo.MongoClient;
+let db;
+
+app.get('/', (req,res, next) => {
+    res.redirect('/home');
+});
+
+app.get('/reg', (req, res, next) => {
+    
+});
 
 
-app.listen(3000)
+
+mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (err, client) => {
+    if(err) throw err;
+    
+    db = client.db('GradeTracker');
+    console.log('Connected to Database!');
+
+    app.listen(PORT);
+    console.log(`Connected to localhost:${PORT}...`);
+});

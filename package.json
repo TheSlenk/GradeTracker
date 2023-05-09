@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "mongodb": "^4.12.1",
+    "pug": "^3.0.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "gradetracker",
+  "version": "1.0.1",
+  "description": "express and mongodb",
+  "main": "db-init.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSlenk/GradeTracker.git"
+  },
+  "author": "Stephen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheSlenk/GradeTracker/issues"
+  },
+  "homepage": "https://github.com/TheSlenk/GradeTracker#readme"
+}
