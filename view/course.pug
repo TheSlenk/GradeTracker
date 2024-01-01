@@ -1,0 +1,13 @@
+html 
+    head
+    body(onload=`init(${data})`)
+        div#categories
+        button(onclick="addNewCategory()") Add Category
+        br
+        br
+        label(for="finalgrade") Final Grade: 
+        input#finalgrade(type="text"  value='0' readonly) 
+
+        script(src="/course.js") 
+
+    
