@@ -15,6 +15,9 @@ app.use(session({
     resave: false
 }));
 
+app.use(express.static('style'));
+app.use(express.static('scripts'));
+
 
 // EXPRESS CONFIG
 app.set('views', 'view');
@@ -30,17 +33,6 @@ app.get('/', (req,res, next) => {
 app.get('/reg', (req, res, next) => {
     res.status(200).render('signup');
 });
-
-
-// SENDING FILES
-app.get('/login.css', (req,res,next) => {
-    res.sendFile('style/login.css', {root: __dirname});
-});
-
-app.get('/signup.js', (req,res,next) => {
-    res.sendFile('scripts/signup.js', {root: __dirname});
-});
-
 
 
 
