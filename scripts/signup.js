@@ -18,13 +18,42 @@ logpass.addEventListener('input', logInEmpty);
 
 
 
-
+//TODO
 function signup() {
-
+    if(signpass.value == signpassconf.value) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/signup');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+                location.reload();
+            } 
+            else if(xhr.readyState === 4 && xhr.status === 400) {
+                alert(xhr.responseText);
+            }
+        }
+        let data = {email: signemail.value, username: signusername.value, password: signpass.value};
+        xhr.send(JSON.stringify(data));
+    } else {
+        alert('Password and Confirm Password are Not Equal!');
+    }
 }
 
-function login() {
 
+//TODO
+function login() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', `/login?email=${logemail.value}&password=${logpass.value}`);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            alert(xhr.responseText);
+            location.href = '/home';
+        } 
+        else if(xhr.readyState === 4 && xhr.status === 400) {
+            alert(xhr.responseText);
+        }
+    }
+    xhr.send();
 }
 
 
