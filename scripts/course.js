@@ -1,9 +1,23 @@
 const categories = document.getElementById('categories');
 const final = document.getElementById('finalgrade');
+const autoUpdateFrequency = 3000;
 let data;
 function init(initData) {
     data = initData;
     update();
+    setTimeout(autoUpdateData, autoUpdateFrequency);
+}
+
+function autoUpdateData() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT','/updatecourse');
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            console.log('Auto Updated Data Succefully!');
+            setTimeout(autoUpdateData, autoUpdateFrequency);
+        }
+    };
+    xhr.send(JSON.stringify(data));
 }
 
 function addCategory(id, name, grade, weight) {

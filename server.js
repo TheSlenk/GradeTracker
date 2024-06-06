@@ -7,11 +7,6 @@ const mongoClient = mongo.MongoClient;
 let db;
 let accounts;
 
-class course {
-    categories;
-
-};
-
 // USE
 app.use(session({
     secret: "audbaiupwdbauidbawiudbddsjmbdnfyfeshbjshfbla",
@@ -96,6 +91,12 @@ app.put('/login', async (req,res,next) => {
                 }
             });
         }
+    });
+});
+
+app.put('/updatecourse', (req, res) => {
+    req.on('data', (data) => {
+        
     });
 });
 
