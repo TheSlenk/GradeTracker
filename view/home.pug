@@ -4,17 +4,21 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Grade Tracker
-        link(rel="stylesheet", href="home.css")
-    body 
+        //link(rel="stylesheet", href="home.css")
+    body(onload=`init(${data})`)
         #top 
              input(type="text" placeholder="Search")
+             button(onclick="addCourse()") Add Course
              a(href="/course/0") Course
+             button(onclick="logout()") Logout
         #bottom 
             #terms
-                button Fall 
-                button Winter
-                button Summer 
+                button(onclick="termChange(0)" style="border-color: red;")#term0 Fall
+                button(onclick="termChange(1)" style="border-color: black;")#term1 Winter
+                button(onclick="termChange(2)" style="border-color: black;")#term2 Summer 
             #courses
+        
+        script(src="home.js")
             
             
             

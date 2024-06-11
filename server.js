@@ -4,8 +4,20 @@ const app = express();
 const mongo = require('mongodb');
 const session = require('express-session');
 const mongoClient = mongo.MongoClient;
+
+
+const mock_course = {
+    "courseId": null,
+    "courseName": "Untitled",
+    "categories": [
+        {"name": "Exam", "grade": 80, "weight": 50}
+    ], 
+    "owner": null, 
+    "readonly": [],
+    "term": null
+};
+
 let db;
-let accounts;
 
 // USE
 app.use(session({
@@ -36,7 +48,11 @@ app.get('/', (req,res, next) => {
 });
 
 app.get('/home', (req, res) => {
-    res.status(200).render('home');
+    if(req.session.loggedin) {
+        res.status(200).render('home', {'data': JSON.stringify({'email': req.session.email, 'username': req.session.username})});
+    } else {
+        res.status(403).redirect('/reg');
+    }
 });
 
 app.get('/reg', (req, res, next) => {
@@ -47,23 +63,25 @@ app.get('/reg', (req, res, next) => {
     res.status(200).render('signup');
 });
 
+//Complete
 app.get('/course/:id', (req, res) => {
     const id = req.params.id;
-    res.status(200).render('course', {"data": JSON.stringify({"categories": [{'name': 'meow', 'grade': 100, 'weight': 5}, {'name': 'dog', 'grade': 54, 'weight': 65}]})});
-    return;
-    accounts.find({'id': id}).toArray((err, result) => {
+    db.collection('courses').find({'courseId': id}).toArray((err, result) => {
         if(err) throw err;
         
-        if(result.length == 0)
+        if(result.length <= 0)
             res.status(404).send('Course Not Found!');
-        else
-            res.status(200).render('course', {"data": result[0]});
+        else {
+            delete result[0]['_id'];
+            res.status(200).render('course', {"data": JSON.stringify(result[0])});
+        }    
     });
 });
 
 
 // PUT
 
+// Complete
 app.put('/login', async (req,res,next) => {
     if(req.session.loggedin) {
         res.redirect('/home');
@@ -94,14 +112,27 @@ app.put('/login', async (req,res,next) => {
     });
 });
 
+//Complete
+app.put('/logout', (req, res) => {
+    req.session.email = undefined;
+    req.session.username = undefined;
+    req.session.loggedin = false;
+    res.status(200).send('Logged Out!');
+});
+//Complete
 app.put('/updatecourse', (req, res) => {
     req.on('data', (data) => {
-        
+        data = JSON.parse(data);
+        db.collection('courses').replaceOne({'courseId': data['courseId']}, data, (err, result) => {
+            if(err) throw err;
+            res.status(200).send('Course updated Succesully!');
+        });
+        res.status(200);
     });
 });
 
 //POST 
-
+// Complete
 app.post('/signup', (req, res, next) => {
     if(req.session.loggedin) {
         res.redirect('/home');
@@ -113,12 +144,14 @@ app.post('/signup', (req, res, next) => {
         db.collection('accounts').find({email: data['email']}).toArray((err, result) => {
             if(err) throw err;
 
-            if(result <= 0) {
+            if(result.length <= 0) {
                 db.collection('accounts').find({username: data['username']}).toArray((err, result) => {
                     if(err) throw err;
 
-                    if(result <= 0) {
-                        data.courses = {"fall": [], "winter": [], "summer": []};
+                    if(result.length <= 0) {
+                        data.fall = [];
+                        data.winter = [];
+                        data.summer = [];
                         db.collection('accounts').insertOne(data, (err, result) => {
                             if(err) throw err;
                             req.session.username = data.username;
@@ -136,6 +169,26 @@ app.post('/signup', (req, res, next) => {
         });
 
     });
+});
+
+//TODO 'remove id and use _id instead'
+app.post('/addcourse', (req, res) => {
+    if(req.session.loggedin) {
+        req.on('data', (data) => {
+            data = JSON.parse(data);
+            let id = new mongo.ObjectId().toString();
+            mock_course['courseId'] = id;
+            mock_course['owner'] = req.session.username;
+            mock_course['term'] = data['term'];
+            db.collection('courses').insertOne(mock_course, (err, result) => {
+                if(err) throw err;
+                console.log(result['insertedId'].toString());
+                res.status(200).send(id);
+            });
+        });
+    } else {
+        res.status(403).redirect('/reg');
+    };
 });
 
 

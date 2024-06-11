@@ -3,6 +3,7 @@ const final = document.getElementById('finalgrade');
 const autoUpdateFrequency = 3000;
 let data;
 function init(initData) {
+    console.log(initData);
     data = initData;
     update();
     setTimeout(autoUpdateData, autoUpdateFrequency);
