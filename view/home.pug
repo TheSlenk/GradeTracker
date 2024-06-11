@@ -7,16 +7,15 @@ html(lang="en")
         //link(rel="stylesheet", href="home.css")
     body(onload=`init(${data})`)
         #top 
-             input(type="text" placeholder="Search")
+             input(type="text" placeholder="Search" oninput="changeFilter()" id="searchbar")
              button(onclick="addCourse()") Add Course
-             a(href="/course/0") Course
              button(onclick="logout()") Logout
-        #bottom 
+        #bottom
             #terms
                 button(onclick="termChange(0)" style="border-color: red;")#term0 Fall
                 button(onclick="termChange(1)" style="border-color: black;")#term1 Winter
                 button(onclick="termChange(2)" style="border-color: black;")#term2 Summer 
-            #courses
+            #courses(style="border:1px solid black;")
         
         script(src="home.js")
             

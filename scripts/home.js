@@ -1,12 +1,15 @@
 let email = null;
 let username = null;
 let term = 0;
+let filter = '';
 
 
 function init(data) {
     email = data['email'];
     username = data['username'];
+    termChange(data['term']);
     console.log(`email: ${email}, username: ${username}`);
+    updateCourses();
 }
 
 function addCourse() {
@@ -43,4 +46,31 @@ function termChange(id) {
             document.getElementById(`term${i}`).style.borderColor = "black";
         }
     }
+    updateCourses();
+}
+
+function updateCourses() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', `/usercourses?username=${username}&term=${term}`);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            const courses = JSON.parse(xhr.response);
+            const coursesDiv = document.getElementById('courses');
+            console.log(courses);
+            coursesDiv.innerHTML = '';
+            for (const course of courses) {
+                if(!course['courseName'].toLowerCase().includes(filter)) 
+                    continue;
+                coursesDiv.innerHTML += `<hr>
+                                        <a href="/course/${course['courseId']}">${course['courseName']}</a>
+                                        <hr>`;
+            }
+        }
+    };
+    xhr.send(null);
+}
+
+function changeFilter() {
+    filter = document.getElementById('searchbar').value.toLowerCase();
+    updateCourses();
 }

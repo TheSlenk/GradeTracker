@@ -23,9 +23,11 @@ let db;
 app.use(session({
     secret: "audbaiupwdbauidbawiudbddsjmbdnfyfeshbjshfbla",
     saveUninitialized:true,
-    cookie: { username: undefined,
-              email: undefined,
-              loggedin: false
+    cookie: { 
+                username: undefined,
+                email: undefined,
+                loggedin: false,
+                lastTermVisited: null
             },
     resave: false
 }));
@@ -49,7 +51,7 @@ app.get('/', (req,res, next) => {
 
 app.get('/home', (req, res) => {
     if(req.session.loggedin) {
-        res.status(200).render('home', {'data': JSON.stringify({'email': req.session.email, 'username': req.session.username})});
+        res.status(200).render('home', {'data': JSON.stringify({'email': req.session.email, 'username': req.session.username, 'term': req.session.lastTermVisited})});
     } else {
         res.status(403).redirect('/reg');
     }
@@ -65,16 +67,39 @@ app.get('/reg', (req, res, next) => {
 
 //Complete
 app.get('/course/:id', (req, res) => {
+    if(!req.session.loggedin) {
+        res.status(403).redirect('/reg');
+        return;
+    }
+
     const id = req.params.id;
     db.collection('courses').find({'courseId': id}).toArray((err, result) => {
         if(err) throw err;
         
-        if(result.length <= 0)
+        if(result.length <= 0 || result[0]['owner'] != req.session.username)
             res.status(404).send('Course Not Found!');
         else {
             delete result[0]['_id'];
             res.status(200).render('course', {"data": JSON.stringify(result[0])});
         }    
+    });
+});
+
+app.get('/usercourses', (req, res) => {
+    const username = req.query.username;
+    const term = parseInt(req.query.term);
+    if(!req.session.loggedin) {
+        res.status(403).redirect('/reg');
+        return
+    }   
+    if(req.session.username != username) {
+        res.status(403).send('You are currently not logged into this account!');
+        return;
+    }
+    db.collection('courses').find({'owner': username, 'term': term}).toArray((err, result) => {
+        if(err) throw err;
+        req.session.lastTermVisited = term;
+        res.status(200).send(JSON.stringify(result));
     });
 });
 
@@ -87,6 +112,7 @@ app.put('/login', async (req,res,next) => {
         res.redirect('/home');
         return;
     }
+
     const email = req.query.email;
     const password = req.query.password;
     db.collection('accounts').find({username: email, password: password}).toArray((err, result) => {
@@ -95,6 +121,7 @@ app.put('/login', async (req,res,next) => {
             req.session.username = result[0].username;
             req.session.email = result[0].email; 
             req.session.loggedin = true;
+            req.session.lastTermVisited = 0;
             res.status(200).send('Logged in via Username!');
         } else {
             db.collection('accounts').find({email: email, password: password}).toArray((err, result) => {
@@ -117,12 +144,23 @@ app.put('/logout', (req, res) => {
     req.session.email = undefined;
     req.session.username = undefined;
     req.session.loggedin = false;
+    req.session.lastTermVisited = null;
     res.status(200).send('Logged Out!');
 });
+
 //Complete
 app.put('/updatecourse', (req, res) => {
+    if(!req.session.loggedin) {
+        res.status(403).redirect('/reg');
+        return;
+    }
+
     req.on('data', (data) => {
         data = JSON.parse(data);
+        if(data['owner'] != req.session.username) {
+            res.status(404).redirect('/home');
+            return;
+        }
         db.collection('courses').replaceOne({'courseId': data['courseId']}, data, (err, result) => {
             if(err) throw err;
             res.status(200).send('Course updated Succesully!');
@@ -157,6 +195,7 @@ app.post('/signup', (req, res, next) => {
                             req.session.username = data.username;
                             req.session.email = data.email; 
                             req.session.loggedin = true;
+                            req.session.lastTermVisited = 0;
                             res.status(200).send('Account Created Successfully!');
                         });
                     } else {
@@ -173,22 +212,23 @@ app.post('/signup', (req, res, next) => {
 
 //TODO 'remove id and use _id instead'
 app.post('/addcourse', (req, res) => {
-    if(req.session.loggedin) {
-        req.on('data', (data) => {
-            data = JSON.parse(data);
-            let id = new mongo.ObjectId().toString();
-            mock_course['courseId'] = id;
-            mock_course['owner'] = req.session.username;
-            mock_course['term'] = data['term'];
-            db.collection('courses').insertOne(mock_course, (err, result) => {
-                if(err) throw err;
-                console.log(result['insertedId'].toString());
-                res.status(200).send(id);
-            });
-        });
-    } else {
+    if(!req.session.loggedin) {
         res.status(403).redirect('/reg');
-    };
+        return;
+    }
+
+    req.on('data', (data) => {
+        data = JSON.parse(data);
+        let id = new mongo.ObjectId().toString();
+        mock_course['courseId'] = id;
+        mock_course['owner'] = req.session.username;
+        mock_course['term'] = data['term'];
+        db.collection('courses').insertOne(mock_course, (err, result) => {
+            if(err) throw err;
+            console.log(result['insertedId'].toString());
+            res.status(200).send(id);
+        });
+    });
 });
 
 
