@@ -6,16 +6,18 @@ html(lang="en")
         title Grade Tracker
         //link(rel="stylesheet", href="home.css")
     body(onload=`init(${data})`)
-        #top 
+        #top
              input(type="text" placeholder="Search" oninput="changeFilter()" id="searchbar")
              button(onclick="addCourse()") Add Course
              button(onclick="logout()") Logout
+             br
+             br
         #bottom
             #terms
                 button(onclick="termChange(0)" style="border-color: red;")#term0 Fall
                 button(onclick="termChange(1)" style="border-color: black;")#term1 Winter
                 button(onclick="termChange(2)" style="border-color: black;")#term2 Summer 
-            #courses(style="border:1px solid black;")
+            #courses
         
         script(src="home.js")
             

@@ -5,6 +5,7 @@ let data;
 function init(initData) {
     console.log(initData);
     data = initData;
+    document.getElementById('courseName').value = data['courseName'];
     update();
     setTimeout(autoUpdateData, autoUpdateFrequency);
 }
@@ -31,18 +32,16 @@ function addCategory(id, name, grade, weight) {
 }
 
 function updateName(id) {
-    console.log(data.categories[id].name);
-    console.log(document.getElementById(`name${id}`).value);
     data.categories[id].name = document.getElementById(`name${id}`).value;
 }
 
 function updateGrade(id) {
-    data.categories[id].grade = document.getElementById(`grade${id}`).value;
+    data.categories[id].grade = parseFloat(document.getElementById(`grade${id}`).value);
     onlyUpdateFinal();
 }
 
 function updateWeight(id) {
-    data.categories[id].weight = document.getElementById(`weight${id}`).value;
+    data.categories[id].weight = parseFloat(document.getElementById(`weight${id}`).value);
     onlyUpdateFinal();
 }
 
@@ -64,6 +63,10 @@ function onlyUpdateFinal() {
     final.value = `%${finalGrade}`;
 }
 
+function updateCourseName() {
+    data['courseName'] = document.getElementById('courseName').value;
+}
+
 function update() {
     let weightSum = 0;
     let finalGrade = 0;
@@ -74,5 +77,5 @@ function update() {
         weightSum += cat.weight;
         finalGrade += cat.weight * cat.grade / 100;
     }
-    final.value = `%${finalGrade}`;
+    final.value = `%${finalGrade.toFixed(2)}`;
 }

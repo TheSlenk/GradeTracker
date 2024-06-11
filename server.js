@@ -130,6 +130,7 @@ app.put('/login', async (req,res,next) => {
                     req.session.username = result[0].username;
                     req.session.email = result[0].email; 
                     req.session.loggedin = true;
+                    req.session.lastTermVisited = 0;
                     res.status(200).send('Logged in via Email!');
                 } else {
                     res.status(400).send('Account Not Found!');
@@ -161,11 +162,20 @@ app.put('/updatecourse', (req, res) => {
             res.status(404).redirect('/home');
             return;
         }
-        db.collection('courses').replaceOne({'courseId': data['courseId']}, data, (err, result) => {
+        db.collection('courses').updateOne({'courseId': data['courseId']}, {$set: data}, (err, result) => {
             if(err) throw err;
             res.status(200).send('Course updated Succesully!');
         });
-        res.status(200);
+    });
+});
+
+app.put('/deletecourse', (req, res) => {
+    req.on('data', (data) => {
+        data = JSON.parse(data);
+        db.collection('courses').deleteOne(data, (err, result) => {
+            if(err) throw err;
+            res.status(200).send();
+        });
     });
 });
 
@@ -219,13 +229,14 @@ app.post('/addcourse', (req, res) => {
 
     req.on('data', (data) => {
         data = JSON.parse(data);
-        let id = new mongo.ObjectId().toString();
+        const id = new mongo.ObjectId().toString();
+        delete mock_course['_id'];
         mock_course['courseId'] = id;
         mock_course['owner'] = req.session.username;
         mock_course['term'] = data['term'];
         db.collection('courses').insertOne(mock_course, (err, result) => {
             if(err) throw err;
-            console.log(result['insertedId'].toString());
+            const _id = result['insertedId'];
             res.status(200).send(id);
         });
     });
@@ -233,7 +244,7 @@ app.post('/addcourse', (req, res) => {
 
 
 
-
+console.log('Connecting to database...');
 mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (err, client) => {
     if(err) throw err;
     
@@ -241,6 +252,7 @@ mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (err, 
     accounts = db.collection('accounts');
     console.log('Connected to Database!');
 
+    console.log("Starting Server...");
     app.listen(PORT);
     console.log(`Connected to localhost:${PORT}...`);
 });
