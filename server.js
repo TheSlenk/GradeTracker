@@ -254,5 +254,5 @@ mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (err, 
 
     console.log("Starting Server...");
     app.listen(PORT);
-    console.log(`Connected to localhost:${PORT}...`);
+    console.log(`Connected to http://localhost:${PORT}/`);
 });
