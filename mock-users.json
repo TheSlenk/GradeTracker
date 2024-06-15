@@ -1,6 +1,5 @@
 {
     "username": "Stephen",
     "email": "stephenmamosian@gmail.com",
-    "password": "123",
-    "courses": {"fall": [], "winter": [], "summer": []}
+    "password": "123"
 }

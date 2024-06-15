@@ -1,0 +1,10 @@
+{
+    "courseId": null,
+    "courseName": "Untitled",
+    "categories": [
+        {"name": "Exam", "grade": 80, "weight": 50}
+    ], 
+    "owner": null, 
+    "readonly": [],
+    "term": null
+}
