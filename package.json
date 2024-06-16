@@ -6,11 +6,13 @@
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "mongodb": "^4.12.1",
+    "mongoose": "^8.4.1",
+    "morgan": "^1.10.0",
     "pug": "^3.0.2"
-    },
+  },
   "scripts": {
     "start": "node server.js"
-    },
+  },
   "name": "gradetracker",
   "version": "1.0.1",
   "description": "express and mongodb",

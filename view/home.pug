@@ -10,9 +10,10 @@ html(lang="en")
         #top(class="flex flex-row justify-left items-center h-[10vw]")
             #accountContainer(class="ml-10 bg-[#F0F0F0] w-[75px] rounded-xl h-[75px] flex items-center justify-center")
                 button(onclick="logout()") Logout
-            input(type="text" class="ml-[8vw] h-[50%] w-[30%] p-5 border border-2 border-[#2b2b2b] rounded-md" placeholder="Search" oninput="changeFilter()" id="searchbar")
+            input(type="text" class="ml-[8vw] h-[40%] w-[40%] p-5 border border-2 border-[#2b2b2b] rounded-2xl" placeholder="Search" oninput="changeFilter()" id="searchbar")
             #logo(class="absolute right-[5vw]")
                 h1(class="Harabara font-bold text-[45px] text-[#BDD358]") GradeTracker
+                hr(class = "border-t-[5px] rounded-md border-[#E5E059] w-[500px] absolute right-0")
         #bottom(class="flex flex-row pl-10 gap-36")
             #terms(class="flex flex-col h-[60vh] justify-center")
                 #termContainer(class = "bg-[#BDD358] rounded-xl h-[300px] w-[75px] justify-center items-center flex flex-col gap-12 text-left")
@@ -25,7 +26,6 @@ html(lang="en")
                     <svg id = "term2" onclick="termChange(1)" class="hover:opacity-[70%] cursor-pointer "style="border-color: black;" width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M40.5589 23.6543L48.3714 23.6586L48.3697 26.7836L40.5572 26.7793L40.5589 23.6543ZM35.0307 36.9846L37.2194 34.7983L42.7892 40.3222L40.5484 42.5085L35.0307 36.9846ZM23.883 40.3118L27.008 40.3135L27.0037 48.126L23.8787 48.1243L23.883 40.3118ZM2.53808 23.6333L10.3506 23.6377L10.3488 26.7627L2.53634 26.7583L2.53808 23.6333ZM35.0958 13.3909L40.5676 7.92514L42.7539 10.1138L37.23 15.6316L35.0958 13.3909ZM8.15381 40.3552L13.6777 34.7853L15.812 36.9219L10.3922 42.5439L8.15381 40.3552ZM23.9041 2.29095L27.0291 2.29268L27.0247 10.1052L23.8997 10.1035L23.9041 2.29095ZM8.17055 10.1469L10.3593 7.90849L15.825 13.3803L14.7827 14.5255L13.6883 15.6707L8.17055 10.1469ZM12.9539 25.2016C12.9558 21.7294 14.1727 18.7786 16.6046 16.3494C19.0365 13.9202 21.9886 12.7066 25.4608 12.7085C28.933 12.7104 31.8837 13.9273 34.3129 16.3592C36.7422 18.7911 37.9558 21.7431 37.9539 25.2154C37.9519 28.6876 36.735 31.6383 34.3031 34.0675C31.8712 36.4967 28.9192 37.7104 25.4469 37.7085C21.9747 37.7066 19.024 36.4897 16.5948 34.0578C14.1656 31.6259 12.952 28.6738 12.9539 25.2016ZM16.0789 25.2033C16.0774 27.8075 16.9877 30.0215 18.8096 31.8454C20.6315 33.6694 22.8445 34.582 25.4487 34.5835C28.0528 34.5849 30.2669 33.6747 32.0908 31.8528C33.9147 30.0309 34.8274 27.8178 34.8289 25.2136C34.8303 22.6095 33.9201 20.3954 32.0982 18.5715C30.2763 16.7476 28.0632 15.8349 25.4591 15.8335C22.8549 15.832 20.6409 16.7423 18.8169 18.5642C16.993 20.3861 16.0803 22.5991 16.0789 25.2033Z" fill="#FFFF00"/>
                     </svg>
-
             #addCourse(class="absolute right-20 bottom-20 hover:opacity-70 cursor-pointer")
                 <svg onclick="addCourse()" width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d_63_4)">
@@ -46,6 +46,8 @@ html(lang="en")
                 </defs>
                 </svg>
             #courses
+            #sumContainer(class="absolute right-10 w-[30vw] h-[30vw] flex justify-center items-center")
+                #summary(class="border-4 w-[20vw] h-[20vw] rounded-full flex items-center justify-center")
         #footer(class="w-screen h-[10vw] flex flex-row justify-center items-center gap-12")
             h1 Contact
             #circle(class="w-[10px] h-[10px] rounded-full bg-[#878787]")
