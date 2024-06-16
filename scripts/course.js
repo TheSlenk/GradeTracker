@@ -1,5 +1,6 @@
 const categories = document.getElementById('categories');
 const final = document.getElementById('finalgrade');
+const average = document.getElementById('currentAvg')
 const autoUpdateFrequency = 3000;
 let data;
 function init(initData) {
@@ -77,5 +78,6 @@ function update() {
         weightSum += cat.weight;
         finalGrade += cat.weight * cat.grade / 100;
     }
+    // average.value = `%${cat.grade}`
     final.value = `%${finalGrade.toFixed(2)}`;
 }
