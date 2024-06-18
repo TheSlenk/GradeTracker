@@ -35,6 +35,7 @@ app.use(session({
 // Setting paths for static files such as style, scripts and etc
 app.use(express.static('style'));
 app.use(express.static('scripts'));
+app.use(express.static('public'));
 
 
 // EXPRESS CONFIG
