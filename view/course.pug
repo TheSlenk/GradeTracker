@@ -1,5 +1,7 @@
 html 
     head
+        title Course 
+        link(rel="stylesheet" href="/course.css")
     body(onload=`init(${data})`)
         a(href="/home") <<< Back
         br
@@ -15,7 +17,10 @@ html
         label(for = "currentAvg") Current Avg:
         input#currentAvg(type="text" value = "0" readonly)
         label(for="finalgrade") Achieved Percentage:
-        input#finalgrade(type="text"  value='0' readonly) 
+        input#finalgrade(type="text"  value='0' readonly)
+        #save
+            img#saveanim(src="/save.png")
+
 
         script(src="/course.js") 
 

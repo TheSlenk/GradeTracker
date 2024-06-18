@@ -1,0 +1,17 @@
+
+#save {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    width: 60%;
+    height: 60%;
+    text-align: right;
+
+}
+#saveanim {
+    border: solid black 1px;
+    border-radius: 100%;
+    width: 9%;
+    height: 16%;
+    object-fit: cover;
+}

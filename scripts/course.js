@@ -1,8 +1,13 @@
 const categories = document.getElementById('categories');
 const final = document.getElementById('finalgrade');
 const average = document.getElementById('currentAvg')
-const autoUpdateFrequency = 3000;
+const autoUpdateFrequency = 5000;
 let data;
+
+const saveImg = "/save.png";
+const savingImg = "/saving.gif";
+
+
 function init(initData) {
     console.log(initData);
     data = initData;
@@ -11,16 +16,29 @@ function init(initData) {
     setTimeout(autoUpdateData, autoUpdateFrequency);
 }
 
-function autoUpdateData() {
+window.addEventListener("beforeunload", (e) => {
+    updateData();
+    return null;
+});
+
+async function updateData(_callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('PUT','/updatecourse');
     xhr.onreadystatechange = () => {
         if(xhr.readyState === 4 && xhr.status === 200) {
             console.log('Auto Updated Data Succefully!');
-            setTimeout(autoUpdateData, autoUpdateFrequency);
+            _callback();
         }
     };
     xhr.send(JSON.stringify(data));
+}
+
+function autoUpdateData() {
+    updateData(() => { 
+        document.getElementById("saveanim").setAttribute("src", savingImg);
+        setTimeout(() => {document.getElementById("saveanim").setAttribute("src", saveImg); }, 2100);
+        setTimeout(autoUpdateData, autoUpdateFrequency); 
+    });
 }
 
 function addCategory(id, name, grade, weight) {
