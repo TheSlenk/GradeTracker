@@ -2,8 +2,7 @@ let email = null;
 let username = null;
 let term = 0;
 let filter = '';
-
-
+let selected = null;
 function init(data) {
     email = data['email'];
     username = data['username'];
@@ -37,7 +36,13 @@ function logout() {
 }
 
 function termChange(id) {
-    term = parseInt(id);
+    document.getElementById(`term_${term}`).style.backgroundColor = "transparent"; // resets the bg color to blank
+    document.getElementById(`term${term}`).style.borderColor = "black"; // resets the borderColor
+    term = parseInt(id);//
+    document.getElementById(`term_${term}`).style.backgroundColor = `#E5E059` // sets the background colour to something noticeable
+    document.getElementById(`term_${term}`).className = "rounded-xl" // sets the background colour to something noticeable
+
+    selected = true;
     for(let i = 0; i < 3; i++) {
         if(i == term) {
             document.getElementById(`term${i}`).style.borderColor = "red";
