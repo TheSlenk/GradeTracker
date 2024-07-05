@@ -20,10 +20,12 @@ html
             h1 Weight 
           div#categories(class="mt-[-2vw] flex flex-col gap-3")
           button(onclick="addNewCategory()" class="border border-white border-2 font-medium p-3 rounded-xl") Add Category    
-      #right(class="flex flex-col gap-12 w-full h-screen justify-center ml-auto")
-        div(class="w-[15vw] h-[15vw] rounded-full border-[#E5E059] border flex flex-col justify-center items-center")
-          input#currentAvg(class="w-[10vw] text-[24px] text-center" type="text" value="0" readonly)
-        div(class="w-[15vw] h-[15vw] rounded-full border-[#E5E059] border flex flex-col justify-center items-center")
-          input#finalgrade(type="text" class="w-[10vw] text-[24px] text-center" value="0" readonly)
+      #right(class="flex flex-col gap-12 w-full h-screen justify-center items-center")
+        div(class="w-[15vw] h-[15vw] rounded-full border-[#F0F0F0] border border-2 flex flex-col justify-center items-center")
+          input#currentAvg(class="w-[10vw] text-[32px] text-center" type="text" value="0" readonly)
+          h1(class = "font-medium text-[12px]") Current Average
+        div(class="w-[15vw] h-[15vw] rounded-full border-[#F0F0F0] border border-2 flex flex-col justify-center items-center")
+          input#finalgrade(type="text" class="w-[10vw] text-[32px] text-center" value="0" readonly)
+          h1(class = "font-medium text-[12px]") Achieved Grade
     script(src="/course.js")
 
