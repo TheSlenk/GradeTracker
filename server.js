@@ -4,8 +4,21 @@ const app = express();
 const mongo = require('mongodb');
 const session = require('express-session');
 const mongoClient = mongo.MongoClient;
+const fs = require('fs/promises');
+console.log('reading...');
+const key = loadData();
+console.log('done!');
+console.log(key.then(data => {console.log(data);}));
 
-
+async function loadData() {
+    try {
+        const data = await fs.readFile('Keys/CookieToken.txt');
+        return data.toString();
+    }
+    catch(err) {
+        throw err;
+    }
+}
 const mock_course = {
     "courseId": null,
     "courseName": "Untitled",
