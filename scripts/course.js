@@ -42,11 +42,10 @@ function autoUpdateData() {
 }
 
 function addCategory(id, name, grade, weight) {
-    categories.innerHTML += `<div id="cat${id}"> 
-                            <input id="name${id}" value="${name}" oninput="updateName(${id})">
-                            <input id="grade${id}" value="${grade}" oninput="updateGrade(${id})"> 
-                            <input id="weight${id}" value="${weight}" oninput="updateWeight(${id})"> 
-                            <button onclick="removeCategory(${id})">Remove</button>
+    categories.innerHTML += `<div id="cat${id}" class="flex flex-row gap-1 rounded-md text-black"> 
+                                <input class="rounded-md w-[60%] p-2" id="name${id}" value="${name}" oninput="updateName(${id})">
+                                <input class = "rounded-md w-[10%] p-2"id="grade${id}" value="${grade}" oninput="updateGrade(${id})"> 
+                                <input id="weight${id}" class= "rounded-md w-[30%] text-right p-2" value="${weight}" oninput="updateWeight(${id})"> 
                             <hr>`;
 }
 
