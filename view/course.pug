@@ -1,32 +1,29 @@
-html 
-    head
-        title Course 
-        link(rel="stylesheet" href="/course.css")
-        script(src="https://cdn.tailwindcss.com")
-    body(onload=`init(${data})`)
-        #page(class="flex flex-row gap-8 w-screen h-screen")
-            #left
-                a(href="/home") 
-                    #accountContainer(class="mt-10 ml-10 bg-[#F0F0F0] w-[75px] rounded-xl h-[75px] flex items-center justify-center")
-                        button Return
-            #middle(class="flex flex-col h-full justify-center")
-                div(class="text-black w-[421px] h-[555px] gap-8 rounded-xl bg-[#E5E059] p-5 flex flex-col")
-                    div(class= "flex flex-row")
-                        h1(class="font-semibold") Course Name
-                    input(type="text" id="courseName" oninput="updateCourseName()") 
-                    div(class = "flex flex-row gap-12 text-[16px] justify-center w-full")
-                        h1 Work Name
-                        h1(class="ml-[6vw]") Grade
-                        h1 Weight 
-                    div#categories(class="mt-[-2vw] flex flex-col gap-3")
-                    button(onclick="addNewCategory()" class="border border-black font-medium p-3 rounded-xl") Add Category    
-            #prompt(class = "flex flex-row")
-                label(for = "currentAvg") Current Avg:
-                    input#currentAvg(type="text" value = "0" readonly)
-                label(for="finalgrade") Achieved Percentage:
-                input#finalgrade(type="text"  value='0' readonly)
-            #save
-                img#saveanim(src="/save.png")
-            script(src="/course.js") 
+html
+  head
+    title Course 
+    link(rel="stylesheet" href="/course.css")
+    script(src="https://cdn.tailwindcss.com")
+  body(onload=`init(${data})` class="text-[#7B7A7A]")
+    #page(class="flex flex-row gap-8 w-screen h-screen")
+      #left
+        a(href="/home") 
+          #accountContainer(class="mt-10 ml-10 bg-[#F0F0F0] w-[75px] rounded-xl h-[75px] flex items-center justify-center")
+            button Return
+      #middle(class="flex flex-col h-full justify-center")
+        div(class="w-[421px] h-[555px] gap-8 rounded-xl bg-[#E5E059] p-5 flex flex-col")
+          div(class="flex flex-row")
+            h1(class="font-semibold") Course Name
+          input(type="text" id="courseName" oninput="updateCourseName()") 
+          div(class="flex flex-row gap-16 text-[16px] justify-center w-full")
+            h1(class="mr-[6vw]") Name
+            h1(class="ml-[3vw]") Grade
+            h1 Weight 
+          div#categories(class="mt-[-2vw] flex flex-col gap-3")
+          button(onclick="addNewCategory()" class="border border-white border-2 font-medium p-3 rounded-xl") Add Category    
+      #right(class="flex flex-col gap-12 w-full h-screen justify-center ml-auto")
+        div(class="w-[15vw] h-[15vw] rounded-full border-[#E5E059] border flex flex-col justify-center items-center")
+          input#currentAvg(class="w-[10vw] text-[24px] text-center" type="text" value="0" readonly)
+        div(class="w-[15vw] h-[15vw] rounded-full border-[#E5E059] border flex flex-col justify-center items-center")
+          input#finalgrade(type="text" class="w-[10vw] text-[24px] text-center" value="0" readonly)
+    script(src="/course.js")
 
-        
