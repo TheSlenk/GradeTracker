@@ -14,7 +14,8 @@ const mock_course = {
     ], 
     "owner": null, 
     "readonly": [],
-    "term": null
+    "term": null,
+    "year": null
 };
 
 let db;
@@ -30,7 +31,8 @@ app.use(session({
                 username: undefined,
                 email: undefined,
                 loggedin: false,
-                lastTermVisited: null
+                lastTermVisited: null,
+                lastYearVisited: null
             },
     resave: false
 }));
@@ -57,7 +59,7 @@ app.get('/', (req,res, next) => {
 
 app.get('/home', (req, res) => {
     if(req.session.loggedin) {
-        res.status(200).render('home', {'data': JSON.stringify({'email': req.session.email, 'username': req.session.username, 'term': req.session.lastTermVisited})});
+        res.status(200).render('home', {'data': JSON.stringify({'email': req.session.email, 'username': req.session.username, 'term': req.session.lastTermVisited, 'year': req.session.lastYearVisited})});
     } else {
         res.status(403).redirect('/reg');
     }
@@ -94,6 +96,7 @@ app.get('/course/:id', (req, res) => {
 app.get('/usercourses', (req, res) => {
     const username = req.query.username;
     const term = parseInt(req.query.term);
+    const year = parseInt(req.query.year);
     if(!req.session.loggedin) {
         res.status(403).redirect('/reg');
         return
@@ -102,9 +105,10 @@ app.get('/usercourses', (req, res) => {
         res.status(403).send('You are currently not logged into this account!');
         return;
     }
-    db.collection('courses').find({'owner': username, 'term': term}).toArray((err, result) => {
+    db.collection('courses').find({'owner': username, 'term': term, 'year': year}).toArray((err, result) => {
         if(err) throw err;
         req.session.lastTermVisited = term;
+        req.session.lastYearVisited = year;
         res.status(200).send(JSON.stringify(result));
     });
 });
@@ -128,6 +132,7 @@ app.put('/login', async (req,res,next) => {
             req.session.email = result[0].email; 
             req.session.loggedin = true;
             req.session.lastTermVisited = 0;
+            req.session.lastYearVisited = 2024;
             res.status(200).send('Logged in via Username!');
         } else {
             db.collection('accounts').find({email: email, password: password}).toArray((err, result) => {
@@ -137,6 +142,7 @@ app.put('/login', async (req,res,next) => {
                     req.session.email = result[0].email; 
                     req.session.loggedin = true;
                     req.session.lastTermVisited = 0;
+                    req.session.lastYearVisited = 2024;
                     res.status(200).send('Logged in via Email!');
                 } else {
                     res.status(400).send('Account Not Found!');
@@ -152,6 +158,7 @@ app.put('/logout', (req, res) => {
     req.session.username = undefined;
     req.session.loggedin = false;
     req.session.lastTermVisited = null;
+    req.session.lastYearVisited = null;
     res.status(200).send('Logged Out!');
 });
 
@@ -212,6 +219,7 @@ app.post('/signup', (req, res, next) => {
                             req.session.email = data.email; 
                             req.session.loggedin = true;
                             req.session.lastTermVisited = 0;
+                            req.session.lastYearVisited = 2024;
                             res.status(200).send('Account Created Successfully!');
                         });
                     } else {
@@ -240,6 +248,7 @@ app.post('/addcourse', (req, res) => {
         mock_course['courseId'] = id;
         mock_course['owner'] = req.session.username;
         mock_course['term'] = data['term'];
+        mock_course['year'] = data['year'];
         db.collection('courses').insertOne(mock_course, (err, result) => {
             if(err) throw err;
             const _id = result['insertedId'];

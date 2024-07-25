@@ -1,12 +1,16 @@
 let email = null;
 let username = null;
 let term = 0;
+let year = 2024;
 let filter = '';
 let selected = null;
 function init(data) {
+    console.log(data);
     email = data['email'];
     username = data['username'];
     termChange(data['term']);
+    document.getElementById("yearvalue").value = data['year'];
+    yearChange();
     console.log(`email: ${email}, username: ${username}`);
 }
 
@@ -18,7 +22,7 @@ function addCourse() {
             location.href = `/course/${xhr.responseText}`;
         }
     };
-    xhr.send(JSON.stringify({'term': term}));
+    xhr.send(JSON.stringify({'term': term, 'year': year}));
 }
 
 function logout() {
@@ -53,9 +57,15 @@ function termChange(id) {
     updateCourses();
 }
 
+function yearChange() {
+    year = parseInt(document.getElementById("yearvalue").value);
+    updateCourses();
+    console.log("year change!");
+}
+
 function updateCourses() {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', `/usercourses?username=${username}&term=${term}`);
+    xhr.open('GET', `/usercourses?username=${username}&term=${term}&year=${year}`);
     xhr.onreadystatechange = () => {
         if(xhr.readyState === 4 && xhr.status === 200) {
             const courses = JSON.parse(xhr.response);

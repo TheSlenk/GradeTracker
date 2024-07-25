@@ -17,7 +17,7 @@ html(lang="en")
         #bottom(class="flex flex-row pl-10 gap-36")
             #terms(class="flex flex-col h-[60vh] justify-center gap-12")
                 #year(class = "bg-[#BDD358] rounded-xl h-[75px] w-[75px] flex object-center items-center justify-center")
-                    input(className = "w-full h-full color-black" type = "number" min = "20" max = "25" placeholder = "24")
+                    input#yearvalue(className = "w-full h-full color-black" type = "number" min = "2020" max = "2025" placeholder = "2024" onchange="yearChange()")
                 #termContainer(class = "bg-[#BDD358] rounded-xl h-[300px] w-[75px] justify-center items-center flex flex-col gap-12 text-left")
                     #term_0
                         <svg id = "term0"onclick="termChange(0)" class="hover:opacity-[70%] cursor-pointer" style="border-color: red;" width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
