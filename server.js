@@ -22,6 +22,9 @@ let db;
 
 const CookieToken = "KEYHOLDER";
 
+const DEFAULT_YEAR = 2024;
+const DEFAULT_TERM = 0;
+
 
 // USE
 app.use(session({
@@ -131,8 +134,8 @@ app.put('/login', async (req,res,next) => {
             req.session.username = result[0].username;
             req.session.email = result[0].email; 
             req.session.loggedin = true;
-            req.session.lastTermVisited = 0;
-            req.session.lastYearVisited = 2024;
+            req.session.lastTermVisited = DEFAULT_TERM;
+            req.session.lastYearVisited = DEFAULT_YEAR;
             res.status(200).send('Logged in via Username!');
         } else {
             db.collection('accounts').find({email: email, password: password}).toArray((err, result) => {
@@ -141,8 +144,8 @@ app.put('/login', async (req,res,next) => {
                     req.session.username = result[0].username;
                     req.session.email = result[0].email; 
                     req.session.loggedin = true;
-                    req.session.lastTermVisited = 0;
-                    req.session.lastYearVisited = 2024;
+                    req.session.lastTermVisited = DEFAULT_TERM;
+                    req.session.lastYearVisited = DEFAULT_YEAR;
                     res.status(200).send('Logged in via Email!');
                 } else {
                     res.status(400).send('Account Not Found!');
@@ -218,8 +221,8 @@ app.post('/signup', (req, res, next) => {
                             req.session.username = data.username;
                             req.session.email = data.email; 
                             req.session.loggedin = true;
-                            req.session.lastTermVisited = 0;
-                            req.session.lastYearVisited = 2024;
+                            req.session.lastTermVisited = DEFAULT_TERM;
+                            req.session.lastYearVisited = DEFAULT_YEAR;
                             res.status(200).send('Account Created Successfully!');
                         });
                     } else {
