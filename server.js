@@ -4,7 +4,7 @@ const app = express();
 const mongo = require('mongodb');
 const session = require('express-session');
 const mongoClient = mongo.MongoClient;
-
+const fs = require('fs');
 
 const mock_course = {
     "courseId": null,
@@ -19,9 +19,12 @@ const mock_course = {
 
 let db;
 
+const CookieToken = "KEYHOLDER";
+
+
 // USE
 app.use(session({
-    secret: "audbaiupwdbauidbawiudbddsjmbdnfyfeshbjshfbla",
+    secret: CookieToken,
     saveUninitialized:true,
     cookie: { 
                 username: undefined,
@@ -31,6 +34,7 @@ app.use(session({
             },
     resave: false
 }));
+
 
 // Setting paths for static files such as style, scripts and etc
 app.use(express.static('style'));
@@ -47,6 +51,7 @@ app.set('view engine', 'pug');
 
 // GET
 app.get('/', (req,res, next) => {
+    console.log(session);
     res.redirect('/home');
 });
 
@@ -246,7 +251,7 @@ app.post('/addcourse', (req, res) => {
 
 
 console.log('Connecting to database...');
-mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (err, client) => {
+mongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, async (err, client) => {
     if(err) throw err;
     
     db = client.db('GradeTracker');
